@@ -21,19 +21,27 @@ const App = () => {
   const handleYesClick = () => {
     if (currentPromptIndex === 0) {
       setYesButtonText('Psst click no first');
-    } else if (currentPromptIndex === noPrompts.length - 1) {
-      setYesButtonText('Ok fine, press the green button!');
+    } else if (currentPromptIndex === noPrompts.length) {
+      setYesButtonText('Click me!');
     }
     setYesButtonSize(yesButtonSize + 25);
   };
 
   const handleNoClick = () => {
-    setYesButtonSize(yesButtonSize + 25);
+    if (currentPromptIndex === noPrompts.length) {
+      return; // Disable further clicks on the No button
+    }
+
+    setYesButtonSize(yesButtonSize + 20);
     setNoButtonText(noPrompts[currentPromptIndex]);
-    currentPromptIndex =
-      (currentPromptIndex + 1) %
-      (noPrompts.length === currentPromptIndex + 1 ? 19 : noPrompts.length);
-    console.log(currentPromptIndex);
+
+    if (currentPromptIndex === noPrompts.length - 1) {
+      setTimeout(() => {
+        setYesButtonText('Click me!');
+      }, 700);
+    }
+
+    currentPromptIndex += 1;
     // const top = Math.random() * window.innerHeight;
     // const left = Math.random() * window.innerWidth;
     // setNoButtonPosition({ top: `${top}px`, left: `${left}px` });
