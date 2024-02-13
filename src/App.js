@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import './App.css';
-import YesButton from './components/YesButton';
-import NoButton from './components/NoButton';
-
-import milkAndMochaLove from '/Users/kevin.wong/github/valentines-prank/src/assets/milk-and-mocha-love.gif';
 import { noPrompts } from './constants/prompts';
-import ButtonInteractionHandler from './components/ButtonInteractionHandler';
+import milkAndMochaLove from '/Users/kevin.wong/github/valentines-prank/src/assets/milk-and-mocha-love.gif';
+import yesGif from '/Users/kevin.wong/github/valentines-prank/src/assets/yesGif.gif';
+import Confetti from 'react-confetti';
+// import ButtonInteractionHandler from './components/ButtonInteractionHandler';
+// import YesButton from './components/YesButton';
+// import NoButton from './components/NoButton';
 
 let currentPromptIndex = 0;
 
@@ -13,18 +14,19 @@ const App = () => {
   const [yesButtonSize, setYesButtonSize] = useState(100);
   const [yesButtonText, setYesButtonText] = useState('Yes');
   const [noButtonText, setNoButtonText] = useState('No');
-  // const [noButtonPosition, setNoButtonPosition] = useState({
-  //   top: '50%',
-  //   left: '50%',
-  // });
+  const [currImg, setCurrImg] = useState(milkAndMochaLove);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const handleYesClick = () => {
     if (currentPromptIndex === 0) {
       setYesButtonText('Psst click no first');
-    } else if (currentPromptIndex === noPrompts.length) {
-      setYesButtonText('Click me!');
     }
-    setYesButtonSize(yesButtonSize + 25);
+
+    if (currentPromptIndex === noPrompts.length) {
+      setCurrImg(yesGif);
+      setShowConfetti(true);
+    }
+    console.log(currentPromptIndex);
   };
 
   const handleNoClick = () => {
@@ -42,14 +44,14 @@ const App = () => {
     }
 
     currentPromptIndex += 1;
-    // const top = Math.random() * window.innerHeight;
-    // const left = Math.random() * window.innerWidth;
-    // setNoButtonPosition({ top: `${top}px`, left: `${left}px` });
+    console.log(currentPromptIndex);
   };
 
   return (
     <div className="valentine-container">
-      <img src={milkAndMochaLove} alt="Milk and Mocha Love GIF" />
+      {showConfetti && <Confetti />}
+
+      <img src={`${currImg}`} alt="Milk and Mocha Love GIF" />
       <div>
         <button
           style={{ backgroundColor: 'green', fontSize: `${yesButtonSize}%` }}
@@ -60,9 +62,6 @@ const App = () => {
         <button
           style={{
             backgroundColor: 'red',
-            // position: 'absolute',
-            // top: noButtonPosition.top,
-            // left: noButtonPosition.left,
           }}
           onClick={handleNoClick}
         >
